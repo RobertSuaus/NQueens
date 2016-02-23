@@ -21,7 +21,6 @@ namespace NQueens
             Console.WriteLine( solucion);
             int output = Convert.ToInt32(solucion, 2);
             Console.WriteLine(output);
-            Console.Read();
         }
     }
 }
