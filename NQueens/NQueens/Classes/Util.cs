@@ -33,6 +33,25 @@ namespace NQueens.Classes
             return solution;
         }
 
-        
+        public static String[] initPopulation(int size=20)
+        {
+            Random rnd = new Random();
+            int randomNumber;
+            String queen="";
+            String[] population = new String[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                while (queen.Length<24)
+                {
+                    randomNumber = rnd.Next(0, 8);
+                    queen = queen + Convert.ToString(randomNumber, 2)
+                            .PadLeft(3, '0');
+                }
+                population[i] = queen;
+                queen = "";
+            }
+            return population;
+        }
     }
 }

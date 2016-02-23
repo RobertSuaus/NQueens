@@ -11,16 +11,11 @@ namespace NQueens
     {
         static void Main(string[] args)
         {
-            //Almacenar numeros en binario en un string
-            String solucion="";
-            int[] n = { 5 , 4, 2, 6, 5, 2, 1, 2};
-            foreach (int number in n)
-            {
-                solucion += Convert.ToString(number, 2);
-            }
-            Console.WriteLine( solucion);
-            int output = Convert.ToInt32(solucion, 2);
-            Console.WriteLine(output);
+            //int output = Convert.ToInt32(solucion, 2);
+            String[] cosa = Util.initPopulation();
+            Console.WriteLine(cosa[1]);
+            Console.WriteLine(Util.Mutate(cosa[1], 100));
+            Console.Read();
         }
     }
 }
