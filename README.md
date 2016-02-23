@@ -1,0 +1,2 @@
+# NQueens
+Academic work
