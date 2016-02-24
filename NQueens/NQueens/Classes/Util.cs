@@ -45,7 +45,7 @@ namespace NQueens.Classes
             return translation;
         }
         //Muta un bit de un cromosoma, si se cumple Pm
-        public static Chromosome mutate(Chromosome chr, float Pm)
+        public static Chromosome mutate(Chromosome chr, float Pm=1f)
         {
             //Comprobar que la probabilidad sea menor que Pm
             if (false)
@@ -69,12 +69,13 @@ namespace NQueens.Classes
             return chr;
         }
 
-        public static Chromosome[] crossover(Chromosome[] parents)
+        public static Chromosome[] crossover(Chromosome parent1, Chromosome parent2, float Pc=65f)
         {
             //Si no hay cruzamiento se regresan los padres
             if (false)
             {
-                return parents;
+               Chromosome[] parents = new Chromosome[] { parent1, parent2 };
+               return parents;
             }
 
             String subject1 = "";
@@ -84,8 +85,8 @@ namespace NQueens.Classes
             Chromosome[] offsprings = new Chromosome[2];
             Random random = new Random(Guid.NewGuid().GetHashCode());
             int index = random.Next(1, 8);
-            subject1 = parents[0].Solution;
-            subject2 = parents[1].Solution;
+            subject1 = parent1.Solution;
+            subject2 = parent2.Solution;
             subjectC1 = subject1.Substring(0, index) + subject2.Substring(index);
             subjectC2 = subject2.Substring(0, index) + subject1.Substring(index);
             offsprings[0].Solution = subjectC1;
@@ -149,22 +150,26 @@ namespace NQueens.Classes
             int delta_row, delta_col;
             for (int i=0; i<8; i++)
             {
-                for (int j=i+1; j<8; j++)
+                for (int j=0; j<8; j++)
                 {
-                    delta_row = i - j;
-                    delta_col = solution[i] - solution[j];
+                    if (j != i)
+                    {
+                        delta_row = i - j;
+                        delta_col = solution[i] - solution[j];
 
-                    if (delta_row == delta_col)
-                    {
-                        collisions++;
-                        //Console.WriteLine("["+i+"]["+solution[i]+"] y "+ "[" + j + "][" + solution[j] + "]");
+                        if (delta_row == delta_col)
+                        {
+                            collisions++;
+                            //Console.WriteLine("["+i+"]["+solution[i]+"] y "+ "[" + j + "][" + solution[j] + "]");
+                        }
+
+                        if (delta_row == -delta_col)
+                        {
+                            collisions++;
+                            //Console.WriteLine("[" + i + "][" + solution[i] + "] y " + "[" + j + "][" + solution[j] + "]");
+                        }
                     }
-                        
-                    if (delta_row == -delta_col)
-                    {
-                        collisions++;
-                        //Console.WriteLine("[" + i + "][" + solution[i] + "] y " + "[" + j + "][" + solution[j] + "]");
-                    }
+                    
                 }
             }
             return collisions;
@@ -172,7 +177,12 @@ namespace NQueens.Classes
         //regresa el fitness de una poblacion de cromosomas
         public static int findFitness(Chromosome[] population)
         {
-            return 0;
+            int totalFit=0;
+            foreach (Chromosome chr in population)
+            {
+                totalFit += chr.Fitness;
+            }
+            return totalFit;
         }
     }
 }

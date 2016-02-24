@@ -11,21 +11,22 @@ namespace NQueens
     {
         static void Main(string[] args)
         {
-            //int output = Convert.ToInt32(solucion, 2);
             Chromosome[] currentGen = Util.initPopulation();
+            //Una solucion verdadera...
+            currentGen[0].Solution = "011110010111001100000101";
             foreach (Chromosome chr in currentGen)
             {
                 chr.Fitness = Util.findFitness(chr);
                 Console.WriteLine(chr.Solution +" "+ chr.Fitness);
             }
-            Console.Write("\n\nMarco de torneo de 4\n\n\n\n");
-            Chromosome[] nextGen= Util.tournamentSelection(currentGen, 2);
+            Console.Write("\n\nMarco de torneo de 2\n\n\n\n");
+            Chromosome[] nextGen= Util.tournamentSelection(currentGen);
             foreach (Chromosome chr in nextGen)
             {
                 Console.WriteLine(chr.Solution+" "+ chr.Fitness);
             }
-            Console.WriteLine("El mas alto (bajo) es:"+ Util.highestFit(nextGen).Fitness);
-
+            Console.WriteLine("El mejor fitness es:"+ Util.highestFit(nextGen).Fitness);
+            Console.WriteLine("El fitness total es:" + Util.findFitness(nextGen));
             Console.Read();
         }
     }
