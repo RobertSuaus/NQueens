@@ -14,7 +14,6 @@ namespace NQueens
             //int output = Convert.ToInt32(solucion, 2);
             String[] cosa = Util.initPopulation();
             Console.WriteLine(cosa[1]);
-            Console.WriteLine(Util.Mutate(cosa[1], 100));
             Console.Read();
         }
     }

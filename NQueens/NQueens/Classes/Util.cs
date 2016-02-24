@@ -8,8 +8,43 @@ namespace NQueens.Classes
 {
     class Util
     {
+        //Crea la poblacion inicial
+        public static String[] initPopulation(int size = 20)
+        {
+            Random rnd = new Random();
+            int randomNumber;
+            String queen = "";
+            String[] population = new String[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                while (queen.Length < 24)
+                {
+                    randomNumber = rnd.Next(0, 8);
+                    queen = queen + Convert.ToString(randomNumber, 2)
+                            .PadLeft(3, '0');
+                }
+                population[i] = queen;
+                queen = "";
+            }
+            return population;
+        }
+
+        //Traduce un string binario a un arreglo de enteros
+        public static int[] translate(String solution)
+        {
+            int[] translation = new int[8];
+            int k = 0;
+            for (int i = 0; i < 24; i += 3)
+            {
+                String chunk = solution.Substring(i, 3);
+                translation[k] = Convert.ToInt32(chunk, 2);
+                k++;
+            }
+            return translation;
+        }
         //Muta un bit de una solucion, si se cumple Pm
-        public static String Mutate(String solution, float Pm)
+        public static String mutate(String solution, float Pm)
         {
             //Comprobar que la probabilidad sea menor que Pm
             if (false)
@@ -33,25 +68,39 @@ namespace NQueens.Classes
             return solution;
         }
 
-        public static String[] initPopulation(int size=20)
+        //Recibe la poblacion actual y realiza el torneo
+        public static String[] tournamentSelection(String[] currentGen, int frameSize=2)
         {
-            Random rnd = new Random();
-            int randomNumber;
-            String queen="";
-            String[] population = new String[size];
-
-            for (int i = 0; i < size; i++)
+            String[] newGen = new String[currentGen.Length];
+            int i = 0;
+            do
             {
-                while (queen.Length<24)
-                {
-                    randomNumber = rnd.Next(0, 8);
-                    queen = queen + Convert.ToString(randomNumber, 2)
-                            .PadLeft(3, '0');
-                }
-                population[i] = queen;
-                queen = "";
-            }
-            return population;
+                string[] slice = new List<string>(currentGen)
+                                .GetRange(i, i+frameSize).ToArray();
+                newGen[i] = highestFit(slice);
+                i++;
+            } while (newGen.Length < currentGen.Length);
+        }
+
+        //Regresa la solucion con el fitness mas alto
+        public static String highestFit(String[] slice)
+        {
+            return slice[0];
+        }
+
+        //regresa el fitness de una solucion
+        public static int fitness(String solution)
+        {
+            //Las colisiones actuales
+            int collisions = 0;
+            int[] Solution = translate(solution);
+
+            return 0;
+        }
+        //regresa el fitness de una poblacion
+        public static int fitness(String[] population)
+        {
+            return 0;
         }
     }
 }
