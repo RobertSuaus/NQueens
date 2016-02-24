@@ -87,6 +87,36 @@ namespace NQueens.Classes
         {
             return slice[0];
         }
+        
+         //Realiza el crossover de toda la poblacion, falta la probabilidad
+        public static String[] crossover(String[] population) {
+
+            String subject1 = "";
+            String subject2 = "";
+            String subjectC1 = "";
+            String subjectC2 = "";
+            String[] populationC = new String[2];
+            Random random = new Random();
+            int index = random.Next(1,8);
+           
+            for (int i=0;i<= population.Length;i++) {
+                subject1 = population[index];
+                subject2 = population[index+1];
+
+                subjectC1 = subject1.Substring(0, index) + subject2.Substring(index);
+                subjectC2 = subject2.Substring(0, index) + subject1.Substring(index);
+
+                populationC[i] = subjectC1;
+                populationC[i + 1] = subjectC2;
+
+                subject1 = "";
+                subject2 = "";
+                subjectC1 = "";
+                subjectC2 = "";
+            }
+
+            return populationC;
+        }
 
         //regresa el fitness de una solucion
         public static int fitness(String solution)
