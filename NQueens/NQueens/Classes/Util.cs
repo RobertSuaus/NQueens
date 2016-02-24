@@ -69,6 +69,30 @@ namespace NQueens.Classes
             return chr;
         }
 
+        public static Chromosome[] crossover(Chromosome[] parents)
+        {
+            //Si no hay cruzamiento se regresan los padres
+            if (false)
+            {
+                return parents;
+            }
+
+            String subject1 = "";
+            String subject2 = "";
+            String subjectC1 = "";
+            String subjectC2 = "";
+            Chromosome[] offsprings = new Chromosome[2];
+            Random random = new Random();
+            int index = random.Next(1, 8);
+            subject1 = parents[0].Solution;
+            subject2 = parents[1].Solution;
+            subjectC1 = subject1.Substring(0, index) + subject2.Substring(index);
+            subjectC2 = subject2.Substring(0, index) + subject1.Substring(index);
+            offsprings[0].Solution = subjectC1;
+            offsprings[1].Solution = subjectC2;
+            return offsprings;
+        }
+
         //Recibe la poblacion actual y realiza el torneo
         public static Chromosome[] tournamentSelection(Chromosome[] currentGen, int frameSize=2)
         {
@@ -83,7 +107,7 @@ namespace NQueens.Classes
                 newGen[k] =  highestFit(slice);
                 i++;
                 k++;
-                if (i+4 >= currentGen.Length) i = 0;
+                if (i+frameSize > currentGen.Length) i = 0;
             } while (newGen[19]==null);
             return newGen;
         }

@@ -19,7 +19,7 @@ namespace NQueens
                 Console.WriteLine(chr.Solution +" "+ chr.Fitness);
             }
             Console.Write("\n\nMarco de torneo de 4\n\n\n\n");
-            Chromosome[] nextGen= Util.tournamentSelection(currentGen, 4);
+            Chromosome[] nextGen= Util.tournamentSelection(currentGen, 2);
             foreach (Chromosome chr in nextGen)
             {
                 Console.WriteLine(chr.Solution+" "+ chr.Fitness);
