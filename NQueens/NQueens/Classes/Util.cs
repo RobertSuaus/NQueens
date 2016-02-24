@@ -11,7 +11,7 @@ namespace NQueens.Classes
         //Crea la poblacion inicial
         public static Chromosome[] initPopulation(int size = 20)
         {
-            Random rnd = new Random();
+            Random rnd = new Random(Guid.NewGuid().GetHashCode());
             int randomNumber;
             String queen = "";
             Chromosome[] population = new Chromosome[size];
@@ -52,7 +52,7 @@ namespace NQueens.Classes
             {
                 return chr;
             }
-            Random random = new Random();
+            Random random = new Random(Guid.NewGuid().GetHashCode());
             int i = random.Next(0, 24);
             
             StringBuilder mutatedSolution = new StringBuilder(chr.Solution);
@@ -82,7 +82,7 @@ namespace NQueens.Classes
             String subjectC1 = "";
             String subjectC2 = "";
             Chromosome[] offsprings = new Chromosome[2];
-            Random random = new Random();
+            Random random = new Random(Guid.NewGuid().GetHashCode());
             int index = random.Next(1, 8);
             subject1 = parents[0].Solution;
             subject2 = parents[1].Solution;
