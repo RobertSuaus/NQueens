@@ -9,12 +9,12 @@ namespace NQueens.Classes
     class Util
     {
         //Crea la poblacion inicial
-        public static String[] initPopulation(int size = 20)
+        public static Chromosome[] initPopulation(int size = 20)
         {
             Random rnd = new Random();
             int randomNumber;
             String queen = "";
-            String[] population = new String[size];
+            Chromosome[] population = new Chromosome[size];
 
             for (int i = 0; i < size; i++)
             {
@@ -24,37 +24,38 @@ namespace NQueens.Classes
                     queen = queen + Convert.ToString(randomNumber, 2)
                             .PadLeft(3, '0');
                 }
-                population[i] = queen;
+                population[i] = new Chromosome();
+                population[i].Solution = queen;
                 queen = "";
             }
             return population;
         }
 
-        //Traduce un string binario a un arreglo de enteros
-        public static int[] translate(String solution)
+        //Traduce un string binario del cromosoma a un arreglo de enteros
+        public static int[] translate(Chromosome chr)
         {
             int[] translation = new int[8];
             int k = 0;
             for (int i = 0; i < 24; i += 3)
             {
-                String chunk = solution.Substring(i, 3);
+                String chunk = chr.Solution.Substring(i, 3);
                 translation[k] = Convert.ToInt32(chunk, 2);
                 k++;
             }
             return translation;
         }
-        //Muta un bit de una solucion, si se cumple Pm
-        public static String mutate(String solution, float Pm)
+        //Muta un bit de un cromosoma, si se cumple Pm
+        public static Chromosome mutate(Chromosome chr, float Pm)
         {
             //Comprobar que la probabilidad sea menor que Pm
             if (false)
             {
-                return solution;
+                return chr;
             }
             Random random = new Random();
             int i = random.Next(0, 24);
             
-            StringBuilder mutatedSolution = new StringBuilder(solution);
+            StringBuilder mutatedSolution = new StringBuilder(chr.Solution);
             if (mutatedSolution[i] == '0')
             {
                 mutatedSolution[i] = '1';
@@ -64,71 +65,88 @@ namespace NQueens.Classes
                 mutatedSolution[i] = '0';
             }
 
-            solution = mutatedSolution.ToString();
-            return solution;
+            chr.Solution = mutatedSolution.ToString();
+            return chr;
         }
 
         //Recibe la poblacion actual y realiza el torneo
-        public static String[] tournamentSelection(String[] currentGen, int frameSize=2)
+        public static Chromosome[] tournamentSelection(Chromosome[] currentGen, int frameSize=2)
         {
-            String[] newGen = new String[currentGen.Length];
+            Chromosome[] newGen = new Chromosome[currentGen.Length];
             int i = 0;
+            int k = 0;
             do
             {
-                string[] slice = new List<string>(currentGen)
-                                .GetRange(i, i+frameSize).ToArray();
-                newGen[i] = highestFit(slice);
+                Chromosome[] slice = new List<Chromosome>(currentGen)
+                                .GetRange(i, frameSize).ToArray();
+                newGen[k] = new Chromosome();
+                newGen[k] =  highestFit(slice);
                 i++;
-            } while (newGen.Length < currentGen.Length);
+                k++;
+                if (i+4 >= currentGen.Length) i = 0;
+            } while (newGen[19]==null);
+            return newGen;
         }
 
-        //Regresa la solucion con el fitness mas alto
-        public static String highestFit(String[] slice)
+        //Regresa el cromosoma con el fitness mas alto
+        public static Chromosome highestFit(Chromosome[] slice)
         {
-            return slice[0];
-        }
-        
-         //Realiza el crossover de toda la poblacion, falta la probabilidad
-        public static String[] crossover(String[] population) {
-
-            String subject1 = "";
-            String subject2 = "";
-            String subjectC1 = "";
-            String subjectC2 = "";
-            String[] populationC = new String[2];
-            Random random = new Random();
-            int index = random.Next(1,8);
-           
-            for (int i=0;i<= population.Length;i++) {
-                subject1 = population[index];
-                subject2 = population[index+1];
-
-                subjectC1 = subject1.Substring(0, index) + subject2.Substring(index);
-                subjectC2 = subject2.Substring(0, index) + subject1.Substring(index);
-
-                populationC[i] = subjectC1;
-                populationC[i + 1] = subjectC2;
-
-                subject1 = "";
-                subject2 = "";
-                subjectC1 = "";
-                subjectC2 = "";
+            //LIFO por si tienen mismo fitness
+            Chromosome top= new Chromosome();
+            top.Fitness = 100;
+            foreach (Chromosome chr in slice)
+            {
+                if (chr.Fitness <= top.Fitness)
+                    top = chr;
             }
-
-            return populationC;
+            return top;
         }
 
-        //regresa el fitness de una solucion
-        public static int fitness(String solution)
+        //regresa el fitness de un cromosoma
+        public static int findFitness(Chromosome chr)
         {
-            //Las colisiones actuales
             int collisions = 0;
-            int[] Solution = translate(solution);
+            int[] solution = translate(chr);
 
-            return 0;
+            //Colisiones verticales
+            var ocurrences = new Dictionary<int, int>();
+
+            foreach (int value in solution)
+            {
+                if (ocurrences.ContainsKey(value))
+                    ocurrences[value]++;
+                else
+                    ocurrences[value] = 0;
+            }
+            foreach (var pair in ocurrences)
+                collisions+= pair.Value*pair.Value;
+
+            //Colisiones diagonales
+            int delta_row, delta_col;
+            for (int i=0; i<8; i++)
+            {
+                for (int j=i+1; j<8; j++)
+                {
+                    delta_row = i - j;
+                    delta_col = solution[i] - solution[j];
+
+                    if (delta_row == delta_col)
+                    {
+                        collisions++;
+                        //Console.WriteLine("["+i+"]["+solution[i]+"] y "+ "[" + j + "][" + solution[j] + "]");
+                    }
+                        
+                    if (delta_row == -delta_col)
+                    {
+                        collisions++;
+                        //Console.WriteLine("[" + i + "][" + solution[i] + "] y " + "[" + j + "][" + solution[j] + "]");
+                    }
+                }
+            }
+            return collisions;
         }
-        //regresa el fitness de una poblacion
-        public static int fitness(String[] population)
+        //regresa el fitness de una poblacion de cromosomas
+        public static int findFitness(Chromosome[] population)
         {
             return 0;
         }
