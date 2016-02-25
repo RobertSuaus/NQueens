@@ -98,10 +98,33 @@ namespace NQueens
 				}
 			}
             Console.WriteLine("**MEJOR GENERACION:**");
+            int[] translation2 = new int[64];
+            int k2 = 0;
+            String chunk;
             foreach (Chromosome chr in bestGeneration)
             {
-                Console.WriteLine("Reinas: " + chr.Solution + " Fitness: " + chr.Fitness);
+                if (chr.Fitness.Equals(0))
+                {
+                    for (int x = 0; x < 24; x += 3)
+                    {
+                        chunk = chr.Solution.Substring(x, 3);
+                        translation2[k2] = Convert.ToInt32(chunk, 2);
+                        k2++;
+                    }
+                    break;
+                }
+
+                
             }
+
+            Console.WriteLine(translation2[0]);
+            Console.WriteLine(translation2[1]);
+            Console.WriteLine(translation2[2]);
+            Console.WriteLine(translation2[3]);
+            Console.WriteLine(translation2[4]);
+            Console.WriteLine(translation2[5]);
+            Console.WriteLine(translation2[6]);
+            Console.WriteLine(translation2[7]);
             Console.Read();
 			
         }
