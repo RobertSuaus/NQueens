@@ -45,14 +45,16 @@ namespace NQueens.Classes
             return translation;
         }
         //Muta un bit de un cromosoma, si se cumple Pm
-        public static Chromosome mutate(Chromosome chr, float Pm=1f)
+        public static Chromosome mutate(Chromosome chr, float Pm)
         {
             //Comprobar que la probabilidad sea menor que Pm
-            if (false)
+            Random random = new Random(Guid.NewGuid().GetHashCode());
+            int p = random.Next(0,101);
+            if (p>=Pm)
             {
                 return chr;
             }
-            Random random = new Random(Guid.NewGuid().GetHashCode());
+            
             int i = random.Next(0, 24);
             
             StringBuilder mutatedSolution = new StringBuilder(chr.Solution);
@@ -69,10 +71,12 @@ namespace NQueens.Classes
             return chr;
         }
 
-        public static Chromosome[] crossover(Chromosome parent1, Chromosome parent2, float Pc=65f)
+        public static Chromosome[] crossover(Chromosome parent1, Chromosome parent2, float Pc)
         {
             //Si no hay cruzamiento se regresan los padres
-            if (false)
+            Random random = new Random(Guid.NewGuid().GetHashCode());
+            int p = random.Next(0, 101);
+            if (p>=Pc)
             {
                Chromosome[] parents = new Chromosome[] { parent1, parent2 };
                return parents;
@@ -83,13 +87,14 @@ namespace NQueens.Classes
             String subjectC1 = "";
             String subjectC2 = "";
             Chromosome[] offsprings = new Chromosome[2];
-            Random random = new Random(Guid.NewGuid().GetHashCode());
             int index = random.Next(1, 24);
             subject1 = parent1.Solution;
             subject2 = parent2.Solution;
             subjectC1 = subject1.Substring(0, index) + subject2.Substring(index);
             subjectC2 = subject2.Substring(0, index) + subject1.Substring(index);
+            offsprings[0] = new Chromosome();
             offsprings[0].Solution = subjectC1;
+            offsprings[1] = new Chromosome();
             offsprings[1].Solution = subjectC2;
             return offsprings;
         }
@@ -109,7 +114,7 @@ namespace NQueens.Classes
                 i++;
                 k++;
                 if (i+frameSize > currentGen.Length) i = 0;
-            } while (newGen[currentGen.Length]==null);
+            } while (newGen[currentGen.Length-1]==null);
             return newGen;
         }
 
@@ -183,6 +188,19 @@ namespace NQueens.Classes
                 totalFit += chr.Fitness;
             }
             return totalFit;
+        }
+
+        public static void shuffle(Chromosome[] population)
+        {
+            // Knuth shuffle algorithm
+            Random random = new Random(Guid.NewGuid().GetHashCode());
+            for (int t = 0; t < population.Length; t++)
+            {
+                Chromosome tmp = population[t];
+                int r = random.Next(t, population.Length);
+                population[t] = population[r];
+                population[r] = tmp;
+            }
         }
     }
 }
