@@ -10,3 +10,9 @@ C:\Users\Robert\Documents\Visual Studio 2015\Projects\NQueens-master\NQueens\NQu
 C:\Users\Robert\Documents\Visual Studio 2015\Projects\NQueens-master\NQueens\NQueens\obj\Debug\NQueens.csprojResolveAssemblyReference.cache
 C:\Users\Robert\Documents\Visual Studio 2015\Projects\NQueens-master\NQueens\NQueens\bin\Debug\NQueens.exe
 C:\Users\Robert\Documents\Visual Studio 2015\Projects\NQueens-master\NQueens\NQueens\bin\Debug\NQueens.pdb
+C:\Users\Robert\Downloads\NQueens-master\NQueens\NQueens\bin\Debug\NQueens.exe.config
+C:\Users\Robert\Downloads\NQueens-master\NQueens\NQueens\obj\Debug\NQueens.exe
+C:\Users\Robert\Downloads\NQueens-master\NQueens\NQueens\obj\Debug\NQueens.pdb
+C:\Users\Robert\Downloads\NQueens-master\NQueens\NQueens\bin\Debug\NQueens.exe
+C:\Users\Robert\Downloads\NQueens-master\NQueens\NQueens\bin\Debug\NQueens.pdb
+C:\Users\Robert\Downloads\NQueens-master\NQueens\NQueens\obj\Debug\NQueens.csprojResolveAssemblyReference.cache

@@ -11,24 +11,7 @@ namespace NQueens
     {
         static void Main(string[] args)
         {
-            /*Chromosome[] currentGen = Util.initPopulation();
-            currentGen[0].Solution = "011110010111001100000101";
-            foreach (Chromosome chr in currentGen)
-            {
-                chr.Fitness = Util.findFitness(chr);
-                Console.WriteLine(chr.Solution +" "+ chr.Fitness);
-            }
-            Console.Write("\n\nMarco de torneo de 2\n\n\n\n");
-            Chromosome[] nextGen= Util.tournamentSelection(currentGen);
-            foreach (Chromosome chr in nextGen)
-            {
-                Console.WriteLine(chr.Solution+" "+ chr.Fitness);
-            }
-            Console.WriteLine("El mejor fitness es:"+ Util.highestFit(nextGen).Fitness);
-            Console.WriteLine("El fitness total es:" + Util.findFitness(nextGen));*/
-			
-			//Soluciona el problema de las N Reinas
-			if(args.Length<4)
+            if(args.Length<4)
 			{
 				Console.WriteLine("Uso: Nqueens.exe NumPoblacion Generaciones Pc Pm");
 				return ;
@@ -53,13 +36,14 @@ namespace NQueens
 			{
 				//Seleccionamos los candidatos para el crossover
 				currentGen= Util.tournamentSelection(currentGen);
-				Chromosome[] newGen = new Chromosome[n];
+                Util.shuffle(currentGen);
+                Chromosome[] newGen = new Chromosome[n];
 				
 				//Crossover
 				for(int j=0; j<n; j+=2)
 				{
 					Chromosome[] offsprings= new Chromosome[2];
-					offsprings= Util.crossover(currentGen[j], currentGen[j+1], 80);
+					offsprings= Util.crossover(currentGen[j], currentGen[j+1], Pc);
                     newGen[j] = offsprings[0];
                     newGen[j + 1] = offsprings[1];
 				}
@@ -70,10 +54,10 @@ namespace NQueens
                     newGen[k] = Util.mutate(newGen[k], Pm);
                     newGen[k].Fitness = Util.findFitness(newGen[k]);
                 }
-                Util.shuffle(newGen);
+                
 				generations[i]= newGen;
 				currentGen= newGen;
-                if (i > 4 && Util.findFitness(generations[i])<15)
+                if (i > 2 && Util.findFitness(generations[i])<n)
                 {
                     if (Util.findFitness(generations[i]) >= Util.findFitness(generations[i - 1]))
                         if (Util.findFitness(generations[i-1]) >= Util.findFitness(generations[i - 2]))
@@ -82,7 +66,7 @@ namespace NQueens
             }
 			//Todas las generaciones
 			Chromosome[] bestGeneration= new Chromosome[n];
-			int bestFit=10000;
+			int bestFit=48*n;
 			foreach (var pair in generations)
 			{
 				Console.WriteLine("----Generacion "+pair.Key+" ----");
@@ -98,35 +82,27 @@ namespace NQueens
 				}
 			}
             Console.WriteLine("**MEJOR GENERACION:**");
-            int[] translation2 = new int[64];
-            int k2 = 0;
-            String chunk;
             foreach (Chromosome chr in bestGeneration)
             {
-                if (chr.Fitness.Equals(0))
+                Console.WriteLine("Reinas: " + chr.Solution + " Fitness: " + chr.Fitness);
+            }
+            Chromosome bestChr = Util.highestFit(bestGeneration);
+            if (bestChr.Fitness != 0)
+            {
+                Console.WriteLine("No se encontró solución en "+gen+" generaciones...");
+            }
+            else
+            {
+                int[] sol = Util.translate(bestChr);
+                Console.Write("Solucion: ");
+                foreach(int num in sol)
                 {
-                    for (int x = 0; x < 24; x += 3)
-                    {
-                        chunk = chr.Solution.Substring(x, 3);
-                        translation2[k2] = Convert.ToInt32(chunk, 2);
-                        k2++;
-                    }
-                    break;
+                    Console.Write(num+" ");
                 }
-
                 
             }
-
-            Console.WriteLine(translation2[0]);
-            Console.WriteLine(translation2[1]);
-            Console.WriteLine(translation2[2]);
-            Console.WriteLine(translation2[3]);
-            Console.WriteLine(translation2[4]);
-            Console.WriteLine(translation2[5]);
-            Console.WriteLine(translation2[6]);
-            Console.WriteLine(translation2[7]);
+                
             Console.Read();
-			
         }
     }
 }
