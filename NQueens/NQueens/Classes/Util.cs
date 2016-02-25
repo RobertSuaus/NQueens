@@ -84,7 +84,7 @@ namespace NQueens.Classes
             String subjectC2 = "";
             Chromosome[] offsprings = new Chromosome[2];
             Random random = new Random(Guid.NewGuid().GetHashCode());
-            int index = random.Next(1, 8);
+            int index = random.Next(1, 24);
             subject1 = parent1.Solution;
             subject2 = parent2.Solution;
             subjectC1 = subject1.Substring(0, index) + subject2.Substring(index);
@@ -109,7 +109,7 @@ namespace NQueens.Classes
                 i++;
                 k++;
                 if (i+frameSize > currentGen.Length) i = 0;
-            } while (newGen[19]==null);
+            } while (newGen[currentGen.Length]==null);
             return newGen;
         }
 
