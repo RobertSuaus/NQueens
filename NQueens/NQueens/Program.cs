@@ -40,9 +40,9 @@ namespace NQueens
             Chromosome[] currentGen= new Chromosome[n];
 			currentGen= Util.initPopulation(n);
 			foreach (Chromosome chr in currentGen)
-				{
-					chr.Fitness= Util.findFitness(chr);
-				}
+			{
+				chr.Fitness= Util.findFitness(chr);
+			}
             
 
             var generations = new Dictionary<int, Chromosome[]>();
